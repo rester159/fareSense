@@ -1,0 +1,14 @@
+---
+description: Where agent definitions live and when to use them
+alwaysApply: true
+---
+
+# Agents reference
+
+Detailed descriptions for all agents (roles, goals, backstory, tools, handoffs) are in **`AGENTS.md`** at the repo root.
+
+- Before adding or changing an agent, read `AGENTS.md` and update it so it stays the single source of truth.
+- When deciding which agent should do a task or how they hand off, refer to `AGENTS.md`.
+- Keep `AGENTS.md` in sync with code under `agents/` (and any crew assembly in `main.py`).
+
+If the project has no agents yet, create `AGENTS.md` with a template section per agent (name, role, goal, backstory, tools, delegates to / receives from).

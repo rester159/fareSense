@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "DOKI",
+    "slug": "doki",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "experiments": {
+      "basePath": "/app"
+    },
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "web": {},
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "scheme": "doki",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFE4E8"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.doki.game"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFE4E8"
+      },
+      "package": "com.doki.game"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "PORTRAIT"
+        }
+      ],
+      "expo-asset"
+    ]
+  }
+}

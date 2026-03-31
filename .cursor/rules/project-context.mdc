@@ -1,0 +1,20 @@
+---
+description: Project structure and where key context lives
+alwaysApply: true
+---
+
+# Project context (always available)
+
+## Where to find things
+
+- **Kawaii UI (MANDATORY for UI work):** `docs/kawaii-ui-bible.md` and `docs/kawaii-interaction-system.md`. Every UI agent, frontend developer, and animation specialist MUST read both before building or modifying any screen. These are the law for visual and interaction design.
+- **Agent definitions (detailed):** `AGENTS.md` at repo root. Lists every agent, role, goal, backstory, and handoffs. Read it when discussing who does what, delegation, or adding/changing agents.
+- **Living spec:** `spec/` folder. Authoritative product/technical spec; agents read it for requirements and update it as the project evolves. Prefer updating files in `spec/` over ad-hoc notes.
+- **Project overview:** This rule and optional `docs/README.md` for high-level architecture and folder map.
+- **Deploy / SSH:** `docs/deploy-ssh.md` — git remote, SSH host (enrico.local), key path, and connection details for deployment.
+- **Conventions / CrewAI patterns:** See other rules in `.cursor/rules/` (e.g. crewai-patterns, conventions).
+
+## When editing the spec
+
+- Edit files under `spec/` to reflect current behavior, decisions, and scope.
+- Keep `spec/README.md` as the index (toc) for the spec; update it when adding or renaming spec files.

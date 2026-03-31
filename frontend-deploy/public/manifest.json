@@ -1,0 +1,10 @@
+{
+  "name": "DOKI",
+  "short_name": "DOKI",
+  "description": "Kawaii Cat Battle & Breeding",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#FFE4E8",
+  "background_color": "#FFE4E8"
+}

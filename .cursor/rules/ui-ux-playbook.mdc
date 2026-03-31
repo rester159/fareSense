@@ -1,0 +1,17 @@
+---
+description: UI agent must follow kawaii docs + UX playbook for every screen built
+globs: frontend/**/*.tsx, frontend/**/*.ts
+alwaysApply: false
+---
+
+# UI Standards — Required for Every Screen
+
+**When building or modifying any screen, modal, sheet, list, or interactive UI:**
+
+1. **Read first (MANDATORY):**
+   - `docs/kawaii-ui-bible.md` — colors, typography, shapes, shadows, spacing, decorative elements
+   - `docs/kawaii-interaction-system.md` — motion, physics, gestures, animation constants
+2. **Also reference:** `.cursor/rules/ux-playbook.md` for tactile feel (Duolingo-style buttons, rubber-banding).
+3. **Audit** every interactive element: buttons (3D extrusion), scroll (rubber-banding), loading (pink-shimmer skeletons), toggles, transitions, haptics.
+4. **Follow the 5 universal principles:** Spring physics, rubber-banding, velocity preservation, 1:1 direct manipulation, haptic punctuation.
+5. **Kawaii aesthetic:** No pure black/gray, pink-tinted shadows, 24px+ radius containers, pill-shaped buttons, at least one decorative element per screen.

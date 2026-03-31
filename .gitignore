@@ -1,0 +1,8 @@
+node_modules/
+.env
+*.log
+.DS_Store
+frontend/.expo/
+frontend/dist/
+backend/node_modules/
+database/.run/
