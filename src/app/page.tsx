@@ -23,7 +23,7 @@ export default function Home() {
             Stop overpaying<br />for flights.
           </h2>
           <p className="text-text-secondary text-base mt-3 leading-relaxed">
-            AI-powered fare predictions tell you exactly when to buy — and when to wait.
+            Smart fare predictions tell you exactly when to buy — and when to wait.
           </p>
         </div>
       </section>
@@ -42,8 +42,8 @@ export default function Home() {
         <div className="max-w-lg mx-auto">
           <div className="flex justify-center gap-6">
             {[
-              { value: '10M+', label: 'data points' },
-              { value: '83%', label: 'accuracy' },
+              { value: '150+', label: 'airlines' },
+              { value: '6', label: 'pricing signals' },
               { value: '100%', label: 'free' },
             ].map((item) => (
               <div key={item.label} className="text-center">
@@ -76,7 +76,7 @@ export default function Home() {
               {
                 step: '2',
                 title: 'Predict',
-                desc: 'Our AI analyzes millions of data points instantly',
+                desc: 'We analyze trends, seasonality, and competition',
                 icon: (
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
