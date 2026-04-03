@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchFlights, deriveQuartiles, secondsToIsoDuration } from '@/lib/kiwi';
+import { logSearch } from '@/lib/search-logger';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -73,6 +74,9 @@ export async function GET(req: NextRequest) {
 
     const prices = offers.map((o: any) => o.price);
     const priceAnalysis = deriveQuartiles(prices);
+
+    // Fire-and-forget: log search to Neon for ML training data
+    void logSearch({ origin, destination, departDate, returnDate }, offers, priceAnalysis);
 
     return NextResponse.json({
       offers,
