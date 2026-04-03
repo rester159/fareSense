@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchFlights, getPriceAnalysis } from '@/lib/amadeus';
+import { searchFlights, deriveQuartiles, secondsToIsoDuration } from '@/lib/kiwi';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -16,49 +16,63 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const [flightData, priceAnalysisData] = await Promise.all([
-      searchFlights({
-        origin,
-        destination,
-        departDate,
-        returnDate: returnDate || undefined,
-        maxOffers: 20,
-      }),
-      getPriceAnalysis({ origin, destination, departDate }),
-    ]);
+    const kiwiData = await searchFlights({
+      origin,
+      destination,
+      departDate,
+      returnDate: returnDate || undefined,
+      maxOffers: 20,
+    });
 
-    const offers = (flightData.data || []).map((offer: any) => ({
-      id: offer.id,
-      price: parseFloat(offer.price.total),
-      currency: offer.price.currency,
-      carrier: offer.validatingAirlineCodes?.[0] || 'Unknown',
-      segments: (offer.itineraries || []).map((itin: any) => ({
-        duration: itin.duration,
-        stops: itin.segments.length - 1,
-        segments: itin.segments.map((seg: any) => ({
-          departure: { airport: seg.departure.iataCode, time: seg.departure.at },
-          arrival: { airport: seg.arrival.iataCode, time: seg.arrival.at },
-          carrier: seg.carrierCode,
-          flightNumber: `${seg.carrierCode}${seg.number}`,
-          duration: seg.duration,
-        })),
-      })),
-    }));
+    const offers = (kiwiData.data || []).map((flight: any) => {
+      // Split route into outbound and return segments
+      const outboundSegments = flight.route.filter(
+        (seg: any) => seg.return === 0
+      );
+      const returnSegments = flight.route.filter(
+        (seg: any) => seg.return === 1
+      );
 
-    let priceAnalysis = null;
-    if (priceAnalysisData?.data?.[0]?.priceMetrics) {
-      const metrics = priceAnalysisData.data[0].priceMetrics;
-      const getAmount = (quartile: string) => {
-        const m = metrics.find((pm: any) => pm.quartileRanking === quartile);
-        return m ? parseFloat(m.amount) : null;
+      const mapSegments = (segs: any[]) =>
+        segs.map((seg: any) => ({
+          departure: { airport: seg.flyFrom, time: seg.local_departure },
+          arrival: { airport: seg.flyTo, time: seg.local_arrival },
+          carrier: seg.airline,
+          flightNumber: `${seg.airline}${seg.flight_no}`,
+          duration: secondsToIsoDuration(
+            (seg.aTime || 0) - (seg.dTime || 0)
+          ),
+        }));
+
+      const itineraries = [];
+      if (outboundSegments.length > 0) {
+        itineraries.push({
+          duration: secondsToIsoDuration(flight.duration?.departure || 0),
+          stops: outboundSegments.length - 1,
+          segments: mapSegments(outboundSegments),
+        });
+      }
+      if (returnSegments.length > 0) {
+        itineraries.push({
+          duration: secondsToIsoDuration(flight.duration?.return || 0),
+          stops: returnSegments.length - 1,
+          segments: mapSegments(returnSegments),
+        });
+      }
+
+      return {
+        id: flight.id,
+        price: flight.price,
+        currency: kiwiData.currency || 'USD',
+        carrier: flight.airlines?.[0] || 'Unknown',
+        segments: itineraries,
+        bookingToken: flight.booking_token,
+        deepLink: flight.deep_link,
       };
+    });
 
-      priceAnalysis = {
-        first: getAmount('FIRST'),
-        median: getAmount('MEDIUM'),
-        third: getAmount('THIRD'),
-      };
-    }
+    const prices = offers.map((o: any) => o.price);
+    const priceAnalysis = deriveQuartiles(prices);
 
     return NextResponse.json({
       offers,

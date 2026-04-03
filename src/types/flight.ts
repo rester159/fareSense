@@ -24,6 +24,8 @@ export interface FlightOffer {
   currency: string;
   carrier: string;
   segments: FlightItinerary[];
+  bookingToken?: string;
+  deepLink?: string;
 }
 
 export interface PriceAnalysisData {

@@ -36,7 +36,18 @@ export default function FareCard({ offer, isCheapest }: FareCardProps) {
           <div className={`text-xl font-bold ${isCheapest ? 'text-teal' : 'text-text-primary'}`}>
             {formatPrice(offer.price)}
           </div>
-          <div className="text-text-muted text-xs">per person</div>
+          {offer.deepLink ? (
+            <a
+              href={offer.deepLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-teal text-xs hover:underline"
+            >
+              Book on Kiwi →
+            </a>
+          ) : (
+            <div className="text-text-muted text-xs">per person</div>
+          )}
         </div>
       </div>
     </Card>
